@@ -1,5 +1,5 @@
 from hmmlearn import hmm
-
+import numpy as np
 
 class HMMdict:
 

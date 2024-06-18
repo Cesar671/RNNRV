@@ -6,7 +6,7 @@ import soundfile as sf
 from scipy.signal import medfilt
 
 
-def preprocesar_audio(audio_path, threshold=15, hop_length=512):
+def preprocesar_audio(audio_path, threshold=30, hop_length=512):
     audio, sr = librosa.load(audio_path)
 
     audio = librosa.to_mono(audio)
@@ -22,13 +22,14 @@ def preprocesar_audio(audio_path, threshold=15, hop_length=512):
 
     audio_sin_espacios, _ = librosa.effects.trim(audio_filtrado)
 
-    audio_sin_espacios = []
+    mfccs = []
     for inicio, fin in tramos_activos:
+        audio_sin_espacios = []
         audio_sin_espacios.extend(audio_filtrado[inicio:fin])
-
-    audio_sin_espacios = np.array(audio_sin_espacios)
-
-    sf.write(audio_path, audio_sin_espacios, sr)
+        audio_sin_espacios = np.array(audio_sin_espacios)
+        sf.write(audio_path, audio_sin_espacios, sr)
+        mfccs.append(extraer_mfcc(audio_path))
+    return mfccs
 
 
 def extraer_mfcc(ruta_audio, n_mfcc=13):
@@ -38,10 +39,10 @@ def extraer_mfcc(ruta_audio, n_mfcc=13):
 
 
 def grabar_audio(duracion, sr=16000, nombre="grabacion_sample.wav"):
-    print("Grabando...")
+    print("#####...Grabando...####")
     audio = sd.rec(int(duracion * sr), samplerate=sr, channels=1)
     sd.wait()  # Espera a que la grabación termine
     print("Grabación completada.")
     sf.write(nombre, audio, sr)
-    sf.write("samples/raw.wav", audio, sr)
-    print(f"Archivo guardado como {nombre}")
+    sf.write("grabado/raw.wav", audio, sr)
+
