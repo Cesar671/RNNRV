@@ -2,7 +2,7 @@ import os
 import librosa
 import numpy as np
 import pandas as pd
-
+from RV.Dir import SAMPLES, CSV
 
 def extract_features(file_name):
     try:
@@ -15,12 +15,11 @@ def extract_features(file_name):
         return None
 
 
-root_dir = 'samples'
 features_list = []
 labels_list = []
 
-for folder_name in os.listdir(root_dir):
-    folder_path = os.path.join(root_dir, folder_name)
+for folder_name in os.listdir(SAMPLES):
+    folder_path = os.path.join(SAMPLES, folder_name)
 
     if os.path.isdir(folder_path):  # Verificar si es una carpeta
         for file_name in os.listdir(folder_path):
@@ -37,6 +36,5 @@ print("creado dataset...")
 df = pd.DataFrame(features_list)
 df['etiqueta'] = labels_list
 
-output_csv = 'caracteristicas_audios.csv'
-df.to_csv(output_csv, index=False)
+df.to_csv(CSV, index=False)
 print("dataset creado")

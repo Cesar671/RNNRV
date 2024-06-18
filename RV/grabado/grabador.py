@@ -4,6 +4,7 @@ import numpy as np
 import sounddevice as sd
 import soundfile as sf
 from scipy.signal import medfilt
+from RV.Dir import RECORDED_RAW, RECORDED_PROC
 
 
 def extraer_mfcc(ruta_audio, n_mfcc=13):
@@ -33,10 +34,10 @@ def preprocesar_audio(audio_path, threshold=30, hop_length=512):
         audio_sin_espacios.extend(audio_filtrado[inicio:fin])
 
     audio_sin_espacios = np.array(audio_sin_espacios)
-    sf.write("grabado/grabado_pre_pro.wav", audio_sin_espacios, sr)
+    sf.write(RECORDED_PROC, audio_sin_espacios, sr)
 
 
-def grabar_audio(duracion, sr=16000, nombre="grabacion_sample.wav"):
+def grabar_audio(duracion, nombre, sr=16000):
     print("Grabando...")
     audio = sd.rec(int(duracion * sr), samplerate=sr, channels=1)
     sd.wait()  # Espera a que la grabación termine
@@ -45,8 +46,8 @@ def grabar_audio(duracion, sr=16000, nombre="grabacion_sample.wav"):
     print(f"Archivo guardado como {nombre}")
 
 
-grabar_audio(5, nombre="grabado/grabado_raw.wav")
+grabar_audio(5, RECORDED_RAW)
 print("preprocesando...")
-preprocesar_audio("grabado/grabado_raw.wav")
+preprocesar_audio(RECORDED_RAW)
 print("preprocesamiento completado.")
 print(f"Archivo guardado como grabado/grabado_pre_pro.wav")

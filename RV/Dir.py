@@ -1,0 +1,7 @@
+SAMPLES = "RV/samples"
+RECORDED = "RV/grabado"
+RECORDED_RAW = "RV/grabado/grabado_raw.wav"
+RECORDED_PROC = "RV/grabado/grabado_pre_pro.wav"
+REC_RAW = "RV/grabado/raw.wav"
+REC_PROC = "RV/grabado/Record1.wav"
+CSV = "RV/caracteristicas_audios.csv"

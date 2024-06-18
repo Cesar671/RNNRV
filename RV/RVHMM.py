@@ -1,6 +1,8 @@
-from preprocessing.PreProcesamiento import grabar_audio, preprocesar_audio, extraer_mfcc
-from reconocimiento.HMM.Hmm import HMMdict
+from RV.preprocessing.PreProcesamiento import grabar_audio, preprocesar_audio
+from RV.reconocimiento.HMM.Hmm import HMMdict
 import pandas as pd
+from RV.Dir import CSV, REC_PROC
+
 
 def __entrenarModelo_dict(csv):
     df = pd.read_csv(csv)
@@ -13,14 +15,13 @@ def __entrenarModelo_dict(csv):
     print("entrenamiento finalizado.")
     return hmmc
 
+
 def reconocer_voz(duracion=5):
-    ruta_grabacion = "grabado/Record1.wav"
-    csv = 'caracteristicas_audios.csv'
-    modelo = __entrenarModelo_dict(csv)
+    modelo = __entrenarModelo_dict(CSV)
 
     #  Pre Procesamiento
-    grabar_audio(duracion, nombre=ruta_grabacion)
-    mfccs_rec = preprocesar_audio(ruta_grabacion)
+    grabar_audio(duracion, nombre=REC_PROC)
+    mfccs_rec = preprocesar_audio(REC_PROC)
     print("Reconociendo...")
-    palabras = [ modelo.reconocer_palabra(mfccs) for mfccs in mfccs_rec]
+    palabras = [modelo.reconocer_palabra(mfccs) for mfccs in mfccs_rec]
     return palabras
